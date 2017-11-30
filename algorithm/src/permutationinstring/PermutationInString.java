@@ -7,6 +7,9 @@ package permutationinstring;
 
 class Solution {
     public boolean checkInclusion(String s1, String s2) {
+        if (s1.length() > s2.length()) {
+            return false;
+        }
         char[] a1 = s1.toCharArray();
         char[] a2 = s2.toCharArray();
         int[] alphabet = getArrayInfo(a1, 0, s1.length());
@@ -17,9 +20,13 @@ class Solution {
             if (ArrayEquals(alphabet, current)) {
                 return true;
             }
-
             wstart++;
             wend++;
+            if( wend <= a2.length) {
+                // update current int[];
+                current[a2[wstart-1] - 'a']--;
+                current[a2[wend-1] - 'a']++;
+            }
         }
         return false;
     }
@@ -99,7 +106,7 @@ class Solution1 {
 
 public class PermutationInString {
     public static void main(String[] args) {
-        Solution1 s = new Solution1();
-        System.out.println(s.checkInclusion("hello", "ooolleoooleh"));
+        Solution s = new Solution();
+        System.out.println(s.checkInclusion("ab", "a"));
     }
 }
