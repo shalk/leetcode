@@ -12,6 +12,8 @@ package taskscheduler;
 // 2. 维护每种任务的数量，并找到当前数量最大的任务
 // 3. 记录cpu使用的次数
 
+// TODO should find a better solution
+
 public class TaskScheduler {
 
     public int leastInterval(char[] tasks, int n) {
