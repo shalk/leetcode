@@ -16,15 +16,15 @@ package taskscheduler;
 
 public class TaskScheduler {
 
-    public int leastInterval(char[] tasks, int n) {
+    private int leastInterval(char[] tasks, int n) {
 
         int tasksNum = tasks.length;
         int[] taskCount = new int[26];
         int[] taskInterval = new int[26];
         int cpuNum = 0;
-        for (int i = 0; i < tasks.length; i += 1) {
-            taskCount[tasks[i] - 'A'] += 1;
-            taskInterval[tasks[i] - 'A'] = 0;
+        for (char t: tasks) {
+            taskCount[t - 'A'] += 1;
+            taskInterval[t - 'A'] = 0;
         }
 
         while (tasksNum > 0) {
@@ -51,11 +51,11 @@ public class TaskScheduler {
     /**
      * find max count char , Interval is enough
      *
-     * @param taskCount
-     * @param taskInterval
-     * @return
+     * @param taskCount 代表任务数量
+     * @param taskInterval  任务与之前的间隔
+     * @return 返回数量最多，间隔足够的索引
      */
-    int maxCountCharIndex(int[] taskCount, int[] taskInterval) {
+    private int maxCountCharIndex(int[] taskCount, int[] taskInterval) {
         int max = -1;
         int maxIndex = -1;
         for (int i = 0; i < taskCount.length; i++) {
@@ -77,5 +77,6 @@ public class TaskScheduler {
         char[] task = new char[]{'A','A','A','B','B','B'};
         TaskScheduler so = new TaskScheduler();
         System.out.println(so.leastInterval(task, 2));
+        System.out.println(so.leastInterval(task, 3));
     }
 }
