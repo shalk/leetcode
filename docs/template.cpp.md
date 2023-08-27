@@ -56,8 +56,7 @@ int find(vector<int>& a, int x) {
 }
 
 int main() {
-  int n, m ;
-  cin >> n >> m;
+  int n, m ;cin >> n >> m;
   vector<int> x(n), c(n);
   for (int i = 0; i < n; i++) {
     cin >> x[i] >> c[i];
@@ -102,6 +101,125 @@ int main() {
   return 0;
 }
 ```
+
+# 差分
+0 a[1] .... a[n] 有差分数组 B[1] ... B[n] 
+
+B[i] = A[i] - A[i-1]; 
+当[l,r] 加C; B[r+1]-=c; B[l] += c;
+A[i] = 求和B[i] (0..i)
+
+```cpp
+#include<iostream>
+#include<vector>
+int main() {
+  int n,m;cin >> n >> m;
+  // 数组前面补0，方便计算查分
+  vector<int> a(n+1);
+  for (int i =1; i <= n; i++) cin >> a[i];
+  // 查分数组后面多一位
+  vector<int> b(n+2);
+  for (int i = 1; i <= n ;i++) b[i] = a[i] - a[i-1];
+  while(m--) {
+    int l,r,c; cin >> l >> r>> c;
+    // [l,r] +c 公式
+    b[r+1] -=c; b[l]+= c;
+  }
+  for (int i = 1; i <= n ;i++) {
+    a[i] = a[i-1] + b[i];
+    printf("%d ", a[i]);
+  }
+  return 0;
+}
+```
+
+# 二维差分
+
+```cpp
+#include<iostream>
+#include<vector>
+using namespace std;
+//公式
+void insert(vector<vector<int> >& a, int x1, int y1, int x2, int y2, int c) {
+  a[x1][y1] += c;
+  a[x1][y2+1] -=c;
+  a[x2+1][y1] -=c;
+  a[x2+1][y2+1] +=c;
+}
+
+int main() {
+  // 输入，注意下标
+  int n,m,q;scanf("%d %d %d",&n,&m,&q);
+  vector<vector<int>> a(n+1, vector<int>(m+1));
+  for (int i = 1; i <= n ;i++)
+    for (int j = 1; j <=m; j++)
+      scanf("%d",&a[i][j]);  
+  // 初始化差分矩阵, 注意下标
+  vector<vector<int>> b(n+2, vector<int>(m+2));
+  for (int i = 1; i <= n; i++)
+    for (int j=1; j <=m; j++)
+      insert(b, i,j,i,j,a[i][j]);
+  
+  // 操作
+  while(q--) {
+    int x1,y1,x2,y2,c;
+    scanf("%d %d %d %d %d\n",&x1,&y1,&x2,&y2,&c);
+    insert(b, x1,y1,x2,y2,c);
+  }
+  // 反求前缀和
+  for (int i =1; i <=n ;i++)
+    for (int j=1; j <=m; j++)
+      a[i][j] = a[i-1][j]+a[i][j-1]-a[i-1][j-1]+b[i][j];
+  // 输出
+  for (int i = 1; i <=n ; i++) {
+    for (int j = 1;j <= m; j++) printf("%d ", a[i][j]);
+    printf("\n");
+  }
+  return 0;
+}
+```
+
+# 二维前缀和
+a[i][j] 前缀和 b[i][j] ,常用于计算子矩阵的和
+
+b[i][j] = a[i][j]+b[i-1][j] + b[i][j-1] - b[i-1][j-1]
+求 x1,y1, x2,y2 的和  = b[x2][y2] - b[x2][y1-1] - b[x1-1][y2] + b[x1-1][y1-1];
+
+```
+#include<iostream>
+#include<vector>
+using namespace std;
+
+int main() {
+  int n,m,q;scanf("%d%d%d",&n,&m,&q);
+  vector<vector<int> > a(n+1,vector<int>(m+1,0));
+  vector<vector<int>> b(n+1, vector<int>(m+1,0));
+  for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <=m;j++) {
+      cin >> a[i][j];
+      b[i][j] = b[i-1][j] + b[i][j-1] - b[i-1][j-1] + a[i][j];
+    }
+  }
+  while(q--) {
+    int x1,y1,x2,y2; scanf("%d%d%d%d\n",&x1,&y1,&x2,&y2);
+    printf("%d\n", b[x2][y2] - b[x2][y1-1] - b[x1-1][y2] + b[x1-1][y1-1]);
+  }
+  return 0;
+}
+```
+
+
+# 前缀和
+a[0]...a[n]
+一定有数组 B[0]....B[n];
+
+B[i+1] = a[0..i] 求和
+B[i] 为 0
+
+[ l , r ]求和
+
+B[l+1] - B[r]
+
 
 
 # 快速排序
