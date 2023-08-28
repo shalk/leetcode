@@ -234,7 +234,31 @@ int main() {
 }
 ```
 
-# 快速排序
+## 快速排序
+```cpp
+//https://www.acwing.com/problem/content/787/
+#include<bits/stdc++.h>
+using namespace std;
+void qsort(vector<int> &a, int lo, int hi) {
+  if (lo >=hi) return;
+  int i = lo-1,j=hi+1,x = a[(i+j)/2];
+  while(i < j) {
+    while(a[++i] < x);
+    while(a[--j] > x);
+    if (i < j) swap(a[i],a[j]);
+  }
+  qsort(a, lo, j);
+  qsort(a, j+1, hi);
+}
+int main() {
+  int n ; cin >> n;
+  vector<int> a(n);
+  for (int i = 0; i <n ;i++) cin >> a[i];
+  qsort(a,0, n-1);
+  for (auto &v: a) printf("%d ",v);
+  return 0;
+}
+```
 
 ## 二分查找
 
