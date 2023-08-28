@@ -210,17 +210,29 @@ int main() {
 
 
 # 前缀和
-a[0]...a[n]
-一定有数组 B[0]....B[n];
+a[0]...a[n] 前缀数组 B[0]....B[n] ,适合求区间和
 
-B[i+1] = a[0..i] 求和
-B[i] 为 0
+B[i] = B[i-1] + a[i];
+[ l , r ] 求和， B[L] - B[R-1];
 
-[ l , r ]求和
-
-B[l+1] - B[r]
-
-
+```
+#include<iostream>
+#include<vector>
+using namespace std;
+int main() {
+  int n,m; scanf("%d%d",&n,&m);
+  vector<int> a(n+1,0),b(n+1,0);
+  for (int i = 1; i <= n ;i++) {
+    scanf("%d", &a[i]);
+    b[i] = b[i-1] + a[i];
+  }
+  while(m--) {
+    int l,r; scanf("%d %d\n",&l,&r);
+    printf("%d\n",b[r]-b[l-1]);
+  }
+  return 0;
+}
+```
 
 # 快速排序
 
