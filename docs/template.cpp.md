@@ -236,6 +236,40 @@ int main() {
 
 # 快速排序
 
+## 二分查找
+
+```cpp
+//https://www.acwing.com/problem/content/791/
+#include<iostream>
+#include<vector>
+using namespace std;
+int n,q;
+int main(){
+  cin >> n >> q;
+  vector<int> a(n);
+  for (int i = 0 ;i < n;i++) cin >> a[i];
+  while(q--) {
+    int x; cin >> x;
+    int l = 0, r = n-1;
+    while(l < r) {
+      int mid = (l+r)/2;
+      if (a[mid] >= x) r = mid;
+      else l = mid + 1;
+    }
+    int first = l;
+    l =0; r = n-1;
+    while(l < r) {
+      int mid = (l+r+1)/2;
+      if (a[mid] <= x) l = mid;
+      else r = mid -1;
+    }
+    int second = l;
+    if (a[first] != x) printf("-1 -1\n");
+    else printf("%d %d\n",first, second);
+  }
+  return 0;
+}
+```
 
 
 ## 单调栈
